@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--    <script src="/socket.io/socket.io.js"></script>-->
+
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0; /* Uklanja vanjski margin od body elementa */
+            background-color: #f0f0f0;
+        }
+
+        .dugmad-container {
+            max-height: 500px;
+            overflow-y: auto;
+            border: 2px solid #45523e;
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 5px;
+        }
+        /*.dugmad-container dodaj isped button ako hocu da nadjaca btn iz button*/
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            margin-top: 8px;
+            background-color: #ad7c6a;
+            color: white;
+            border: 1px solid #45523e;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .d {
+            border-radius: 10px;
+            width: 30%;
+            font-family: Arial;
+            background-color: white;
+        }
+
+    </style>
+</head>
+<body>
+<div class="d">
+    <div class="dugmad-container">
+        <h2 class="c"><%= title %></h2>
+
+        <ul>
+        <%for(let i = 0; i < korisnici.length; i++) {%>
+            <li>
+                <button type="button" class="btn btn-light" onclick="otvoriChat('<%= korisnici[i].id %>')"><%= korisnici[i].email%></button>
+            </li>
+        <% } %>
+    </ul>
+    </div>
+</div>
+
+<script>
+    function otvoriChat(id) {
+        console.log(`Kliknuto na dugme: ${id}`);
+        window.location.href = "/test/ws/" + id;
+    }
+</script>
+</body>
+</html>

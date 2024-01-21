@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+<div class="container">
+    <h2><%= title %></h2>
+    <br>
+    <br>
+    <div>
+        <%for(let i = 0; i < detalji.length; i++) {%>
+            <div>
+                <p><strong>Naziv:</strong> <%= detalji[i].naziv %></p>
+                <p><strong>Opis:</strong> <%= detalji[i].opis %></p>
+                <p><strong>Menadžer:</strong> <%= detalji[i].ime %> <%= detalji[i].prezime %></p>
+                <br>
+                <br>
+                <%
+                    var danasnjiDatum = new Date();
+                    console.log("Danasnji datum:", danasnjiDatum);
+                    console.log("Zavrsni datum:", new Date(detalji[i].zavrsni_datum));
+                    console.log(new Date(detalji[i].zavrsni_datum) < danasnjiDatum);
+                if (new Date(detalji[i].zavrsni_datum) > danasnjiDatum) {
+                    var sviTaskoviObradeni = taskovi.every(function(task) {
+                        return task.status === 'obrađen';
+                    });
+
+                if (sviTaskoviObradeni && taskovi.length > 0) {
+                %>
+                    <h4> <strong> <%= "Projekat je završen." %> </strong> </h4>
+                <%
+                } else {
+                %>
+                    <h4> <strong> <%= "Projekat je u tijeku." %> </strong> </h4>
+                <%
+                }
+                } else {
+                %>
+                    <h4> <strong> <%= "Datum završetka projekta je istekao." %> </strong> </h4>
+                <%
+                }
+                %>
+
+            </div>
+        <%}%>
+    </div>
+    <br>
+    <br>
+
+    <h3>Radnici na projektu: </h3>
+    <br>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th> Ime radnika </th>
+                <th> Prezime radnika </th>
+                <th> E-mail radnika </th>
+                <th> Broj radnih sati na projektu </th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <%for(let j = 0; j < radnici.length; j++) {%>
+                <tr>
+                    <td> <%= radnici[j].ime %> </td>
+                    <td> <%= radnici[j].prezime %> </td>
+                    <td style="width: 33%"> <%= radnici[j].email %> </td>
+                    <td> <%= radnici[j].ukupan_broj_sati %> </td>
+                </tr>
+            <%}%>
+
+            </tbody>
+        </table>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <h3>Taskovi na projektu: </h3>
+    <br>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th> Naziv taska </th>
+                <th> Opis taska </th>
+                <th> Status taska </th>
+                <th> Radnik </th>
+                <th> Broj radnih sati na tasku </th>
+                <th>  </th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <%for(let j = 0; j < taskovi.length; j++) {%>
+                <tr>
+                    <td> <%= taskovi[j].naziv %> </td>
+                    <td style="width: 35%"> <%= taskovi[j].opis %> </td>
+                    <td id = status_id > <%= taskovi[j].status %> </td>
+                    <td> <%= taskovi[j].ime %> <%= taskovi[j].prezime%> </td>
+                    <td style="width: 10%"> <%= taskovi[j].ukupan_broj_sati %> </td>
+                    <td style="width: 10%">
+                        <% if (taskovi[j].status === 'u obradi') { %>
+                            <button id="btnID" class="btn btn-primary btn-sm" onclick="obradiTask('<%= taskovi[j].id %>', '<%= taskovi[j].projekat_id %>')">Obradi!</button>
+                        <% } else { %>
+                            <!-- Dodajte prazan prostor ili poruku ako nije u obradi -->
+                        <% } %>
+                    </td>
+                </tr>
+            <%}%>
+
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+</div>
+
+<script>
+
+    function obradiTask(id, projekat_id) {
+        window.location.href = "/radnik/obradiStatus/" + id + "/" + projekat_id;
+
+    }
+
+</script>
+
+
+
+</body>
+</html>

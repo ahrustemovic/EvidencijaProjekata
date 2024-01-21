@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+<div class="header" id="mojHeader">
+    <a href="" class="active"> <i class="glyphicon glyphicon-book"> </i> IT </a>
+    <a class="desno" href="/logout"> <i class="glyphicon glyphicon-log-out"> </i>  </a>
+    <a class="desno"href="/users/mojProfil"> <i class="glyphicon glyphicon-user"> </i>  </a>
+
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()"> <i class="fa fa-bars"> </i> </a>
+</div>
+<div class="b ">
+<h1><%= title %></h1>
+    <br>
+    <br>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th> Ime </th>
+            <th> Prezime </th>
+            <th> E-mail </th>
+<!--            <th> Uloga </th>-->
+            <th> Akcije </th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%for(let i = 0; i < korisnici.length; i++) {%>
+            <%console.log(korisnici[i])%>
+            <tr>
+                <td> <%= korisnici[i].ime %> </td>
+                <td> <%= korisnici[i].prezime %> </td>
+                <td style="width: 33%"> <%= korisnici[i].email %> </td>
+                <td style="width: 18%">
+                    <button type="button" class="btn btn-info" onclick="detalji('<%= korisnici[i].id %>')">Detalji!</button>
+                    <button type="button" class="btn btn-dark" onclick="uredi('<%= korisnici[i].id %>')">Uredi!</button>
+                    <button type="button" class="btn btn-danger" onclick="obrisi('<%= korisnici[i].id %>')">Obrisi!</button>
+
+                </td>
+            </tr>
+        <%}%>
+
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-warning" onclick="dodaj()">Dodaj korisnika</button>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+</div>
+<script>
+    function obrisi(id){
+        console.log( id)
+        window.location.href="/users/obrisi/korisnici/" + id;
+    }
+
+    function dodaj(){
+        window.location.href="/users/noviKorisnik";
+    }
+
+    function detalji(id) {
+        window.location.href="/users/detalji/" + id;
+
+    }
+    function uredi(id) {
+        window.location.href="/users/uredi/" + id;
+
+    }
+</script>
+
+</body>
+</html>

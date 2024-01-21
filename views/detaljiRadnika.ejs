@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+</head>
+<body>
+<div class="container b">
+    <h2><%= title %></h2>
+
+    <br>
+    <br>
+
+    <div>
+        <%for(let i = 0; i < detalji.length; i++) {%>
+            <div>
+                <p><strong>Ime:</strong> <%= detalji[i].ime %></p>
+                <p><strong>Prezime:</strong> <%= detalji[i].prezime %></p>
+                <p><strong>E-mail:</strong> <%= detalji[i].email %></p>
+            </div>
+        <%}%>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h3>Projekti na kojima radi ovaj radnik </h3>
+    <br>
+    <br>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th> Naziv projekta </th>
+                <th> Naziv taska </th>
+                <th> Opis taska </th>
+                <th> Status taska </th>
+                <th> Broj radnih sati </th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <%for(let j = 0; j < detalji.length; j++) {%>
+                <tr>
+                    <td> <%= detalji[j].projekat_naziv %> </td>
+                    <td> <%= detalji[j].task_naziv %> </td>
+                    <td> <%= detalji[j].task_opis %> </td>
+                    <td> <%= detalji[j].task_status %> </td>
+                    <td> <%= detalji[j].ukupno_radnih_sati %> </td>
+
+
+                </tr>
+            <%}%>
+
+            </tbody>
+        </table>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <h3>Broj radnih dana u ovoj godini: </h3>
+
+    <br>
+    <br>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+<!--                <th> Radnik </th>-->
+                <th> Januar  </th>
+                <th> Februar </th>
+                <th> Mart </th>
+                <th> April </th>
+                <th> Maj </th>
+                <th> Juni </th>
+                <th> Juli </th>
+                <th> Avgust </th>
+                <th> Septembar </th>
+                <th> Oktobar </th>
+                <th> Novembar </th>
+                <th> Decembar </th>
+                <th> Ukupno </th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <%for(let j = 0; j < radniSati.length; j++) {%>
+                <tr>
+<!--                    <td> <%= radniSati[j].ime%> <%= radniSati[j].prezime%></td>-->
+                    <td> <%= radniSati[j].januar %> </td>
+                    <td> <%= radniSati[j].februar %> </td>
+                    <td> <%= radniSati[j].mart %> </td>
+                    <td> <%= radniSati[j].april %> </td>
+                    <td> <%= radniSati[j].maj %> </td>
+                    <td> <%= radniSati[j].juni %> </td>
+                    <td> <%= radniSati[j].juli %> </td>
+                    <td> <%= radniSati[j].avgust %> </td>
+                    <td> <%= radniSati[j].septembar %> </td>
+                    <td> <%= radniSati[j].oktobar %> </td>
+                    <td> <%= radniSati[j].novembar %> </td>
+                    <td> <%= radniSati[j].decembar %> </td>
+                    <td> <%= radniSati[j].ukupno_radnih_dana %> </td>
+
+
+                </tr>
+            <%}%>
+
+            </tbody>
+        </table>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+</div>
+
+</body>
+</html>

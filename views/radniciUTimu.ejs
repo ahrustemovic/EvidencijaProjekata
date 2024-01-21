@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <style>
+
+
+        .team-card {
+            border: 1px solid #ccc;
+            padding: 30px;
+            margin-top: 100px;
+            margin-right: 50px;
+            margin-bottom: 50px;
+            margin-left: 50px;
+            width: 200px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+    </style>
+
+</head>
+<body>
+<div class="header" id="mojHeader">
+    <a href="" class="active"> <i class="glyphicon glyphicon-book"> </i> IT </a>
+    <a class="desno" href="/logout"> <i class="glyphicon glyphicon-log-out"> </i>  </a>
+    <a class="desno" href="/menadzer/mojProfil"> <i class="glyphicon glyphicon-user"> </i> </a>
+
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()"> <i class="fa fa-bars"> </i> </a>
+</div>
+<div class="b">
+
+    <div>
+        <%for(let i = 0; i < nazivTima.length; i++) {%>
+            <div>
+                <h3 class="c"><strong> <%= nazivTima[i].naziv %> </strong> </h3>
+                <p><strong>Upravljaj radnicima u timu -> </strong> <button type="button" class="btn btn-warning" onclick="dodaj('<%=nazivTima[i].id%>')">Dodaj radnika!</button> </p>
+
+            </div>
+        <%}%>
+    </div>
+
+
+<div class="c">
+    <div class="card-deck">
+        <% for(let j = 0; j < radnici.length; j++) { %>
+            <div class="card">
+                <div class="team-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQegbILcbmF5GKm--MgJueO-zn7bSM6xcl8YroeNQL3MlOdOco2pmg0iUrslYtmEMlu6w0&usqp=CAU" alt="Korisnici" style="width:100%">
+                    <h5 class="card-title"><%= radnici[j].ime %> <%= radnici[j].prezime %></h5>
+                    <a href="#" class="btn btn-primary" onclick="otvoriDetalje('<%= radnici[j].id %>')">Detalji</a>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>
+</div>
+<script>
+    function otvoriDetalje(id) {
+        window.open("/menadzer/detaljiRadnika/" + id, '_blank');
+    }
+
+    function dodaj(id) {
+        window.location.href = "/menadzer/dodajRadnikaUTim/" + id;
+    }
+</script>
+
+
+    </div>
+
+
+</div>
+
+</body>
+</html>

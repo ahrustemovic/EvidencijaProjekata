@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+
+</head>
+<body>
+
+<div class="header" id="mojHeader">
+    <a href="/users/adminPocetna" class="active"> <i class="glyphicon glyphicon-book"> </i> IT </a>
+    <a class="desno" href="/logout"> <i class="glyphicon glyphicon-log-out"> </i>  </a>
+    <a class="desno" href=""> <i class="glyphicon glyphicon-user"> </i> </a>
+
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()"> <i class="fa fa-bars"> </i> </a>
+</div>
+
+<div class="container">
+
+    <br>
+    <br>
+    <br>
+    <h2 class="c">Dobrodošli na moj profil!</h2>
+    <br>
+    <br>
+    <div>
+        <%for(let i = 0; i < korisnici.length; i++) {%>
+            <div>
+                <br>
+                <p>
+                    Pozdrav, ja sam <strong> <%= korisnici[i].ime %> <%= korisnici[i].prezime %></strong>.
+                    Trenutno sam zadužen/a za administraciju stranice, gdje se trudim održavati visok standard kvalitete sadržaja i interakcije s
+                    korisnicima.
+                </p>
+                <br>
+                 <p>
+                     Kao administrator/ka, imam privilegiju surađivati s fantastičnom zajednicom koja dijeli zajedničku strast prema [temi ili području interesa].
+                    Naš cilj je stvarati relevantan, informativan i inspirativan sadržaj koji potiče razmjenu ideja i povezivanje ljudi.
+                 </p>
+                <br>
+                <p>
+                    Za daljnje informacije, suradnju ili razmjenu iskustava, slobodno me kontaktirajte putem emaila: <strong><%= korisnici[i].email %></strong>.
+                </p>
+                <br>
+                <p>
+                    Radujem se povezivanju i zajedničkom gradnji uspješnih projekata!
+                </p>
+            </div>
+        <%}%>
+    </div>
+
+
+
+</div>
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("mojHeader");
+        if (x.className === "header") {
+            x.className += " responsive";
+        } else {
+            x.className = "header";
+        }
+    }
+
+</script>
+
+</body>
+</html>

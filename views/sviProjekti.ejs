@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+<div class="header" id="mojHeader">
+    <a href="" class="active"> <i class="glyphicon glyphicon-book"> </i> IT </a>
+    <a class="desno" href="/logout"> <i class="glyphicon glyphicon-log-out"> </i>  </a>
+    <a class="desno"href="/users/mojProfil"> <i class="glyphicon glyphicon-user"> </i>  </a>
+
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()"> <i class="fa fa-bars"> </i> </a>
+</div>
+<div class="b">
+    <h1><%= title %></h1>
+    <br>
+    <br>
+
+    <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th> Naziv </th>
+            <th> Opis </th>
+            <th> Startni datum </th>
+            <th> Zavrsni datum </th>
+            <th>  </th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <%for(let i = 0; i < projekti.length; i++) {%>
+            <tr>
+                <td> <%= projekti[i].naziv %> </td>
+                <td style="width: 33%"> <%= projekti[i].opis %> </td>
+                <td> <%= projekti[i].startni_datum.toLocaleDateString() %> </td>
+                <td> <%= projekti[i].zavrsni_datum.toLocaleDateString() %> </td>
+                <td style="width: 12%">
+                    <button type="button" class="btn btn-info" onclick="detalji('<%= projekti[i].id %>')">Detalji!</button>
+                    <button type="button" class="btn btn-dark" onclick="uredi('<%= projekti[i].id %>')">Uredi!</button>
+                </td>
+
+
+            </tr>
+        <%}%>
+
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-warning" onclick="dodaj()">Dodaj projekat</button>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+</div>
+<script>
+    function dodaj(){
+        window.location.href="/users/noviProjekat";
+    }
+
+    function detalji(id) {
+        window.location.href="/users/detaljiProjekta/" + id;
+
+    }
+
+    function uredi(id) {
+        window.location.href="/users/urediProjekat/" + id;
+
+    }
+
+</script>
+</body>
+</html>

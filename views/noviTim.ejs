@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+<div class="b">
+<h2 class="c"><%= title %></h2>
+<div>
+
+    <form action="/menadzer/noviTim" method="post" class="forma">
+
+        <label>Naziv tima: </label>
+        <input type="text" name="naziv" required class="form-control">
+        <br>
+
+        <label>E-mail menadžera tima: </label>
+        <input type="text" name="email" required class="form-control">
+        <br>
+
+        <input type="submit" value="Kreiraj tim!" class="form-control" style="background-color: #cfc8be;" >
+
+        <br>
+        <br>
+
+
+    </form>
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html>&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <title><%= title %></title>&ndash;&gt;-->
+<!--&lt;!&ndash;    <link rel='stylesheet' href='/stylesheets/style.css' />&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">&ndash;&gt;-->
+<!--&lt;!&ndash;    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">&ndash;&gt;-->
+<!--&lt;!&ndash;    <script src="/socket.io/socket.io.js"></script>&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="d">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div id="poruke"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <input type="text" id="tekst_poruke">&ndash;&gt;-->
+<!--&lt;!&ndash;    <input type="button" value="posalji" onclick="saljiPoruku()">&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+<!--&lt;!&ndash;    var socket = io.connect('ws://localhost:3000');&ndash;&gt;-->
+
+<!--&lt;!&ndash;    socket.on('poruka_sa_servera', function (d) {&ndash;&gt;-->
+<!--&lt;!&ndash;        document.getElementById('poruke').innerHTML += `<div>${d}</div>`;&ndash;&gt;-->
+<!--&lt;!&ndash;    });&ndash;&gt;-->
+
+<!--&lt;!&ndash;    socket.on(`sve_poruke_${id}`, function (d) {&ndash;&gt;-->
+<!--&lt;!&ndash;        document.getElementById('poruke').innerHTML += `<div>${d}</div>`;&ndash;&gt;-->
+<!--&lt;!&ndash;    });&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;    function saljiPoruku() {&ndash;&gt;-->
+<!--&lt;!&ndash;        let tekst = document.getElementById('tekst_poruke').value;&ndash;&gt;-->
+<!--&lt;!&ndash;        socket.emit('klijent_salje_poruku', tekst);&ndash;&gt;-->
+
+<!--&lt;!&ndash;        document.getElementById('tekst_poruke').value = "";&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title><%= title %></title>-->
+<!--    <link rel='stylesheet' href='/stylesheets/style.css' />-->
+
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+<!--    <script src="/socket.io/socket.io.js"></script>-->
+
+<!--    <style>-->
+<!--        body {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            height: 100vh;-->
+<!--            margin: 0;-->
+<!--            background-color: #ffffff; /* Set the overall background color to white */-->
+<!--        }-->
+
+<!--        .chat-container {-->
+<!--            max-width: 600px;-->
+<!--            width: 100%;-->
+<!--            padding: 20px;-->
+<!--            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);-->
+<!--            background-color: #ffffff;-->
+<!--        }-->
+
+<!--        .message-container {-->
+<!--            max-height: 300px; /* Set the maximum height for the message container */-->
+<!--            overflow-y: auto; /* Enable vertical scrolling */-->
+<!--        }-->
+
+<!--        .message {-->
+<!--            background-color: #3498db;-->
+<!--            color: #ffffff;-->
+<!--            padding: 10px;-->
+<!--            margin-bottom: 10px;-->
+<!--            border-radius: 5px;-->
+<!--            display: table; /* Display as table to match the width of each message */-->
+<!--            width: auto; /* Set width to auto for flexibility */-->
+<!--        }-->
+
+<!--        #tekst_poruke {-->
+<!--            width: calc(100% - 22px);-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container chat-container">-->
+<!--    <div id="poruke" class="message-container"></div>-->
+<!--    <input type="text" id="tekst_poruke" class="form-control" placeholder="Unesite poruku">-->
+<!--    <button class="btn btn-primary" onclick="saljiPoruku()">Pošalji</button>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    var socket = io.connect('ws://localhost:3000');-->
+
+<!--    socket.on('poruka_sa_servera', function (d) {-->
+<!--        document.getElementById('poruke').innerHTML += `<div class="message">${d}</div>`;-->
+<!--    });-->
+
+<!--    socket.on(`sve_poruke_${id}`, function (d) {-->
+<!--        document.getElementById('poruke').innerHTML += `<div class="message">${d}</div>`;-->
+<!--    });-->
+
+<!--    function saljiPoruku() {-->
+<!--        let tekst = document.getElementById('tekst_poruke').value;-->
+<!--        socket.emit('klijent_salje_poruku', tekst);-->
+<!--        document.getElementById('tekst_poruke').value = "";-->
+<!--    }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+<!-- chatPoruke2.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="/socket.io/socket.io.js"></script>
+
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffffff; /* Set the overall background color to white */
+        }
+
+        .chat-container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        .message-container {
+            max-height: 300px; /* Set the maximum height for the message container */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        .message {
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: table; /* Display as table to match the width of each message */
+            width: auto; /* Set width to auto for flexibility */
+        }
+
+        #tekst_poruke {
+            width: calc(100% - 22px);
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container chat-container">
+    <div id="poruke" class="message-container">
+        <% for (let i = 0; i < poruke.length; i++) { %>
+            <div class="message"><%= poruke[i] %></div>
+        <% } %>
+    </div>
+    <input type="text" id="tekst_poruke" class="form-control" placeholder="Unesite poruku">
+    <button class="btn btn-primary" onclick="saljiPoruku()">Pošalji</button>
+</div>
+
+<script>
+    var socket = io.connect('ws://localhost:3000');
+
+    socket.on('poruka_sa_servera', function (d) {
+        document.getElementById('poruke').innerHTML += `<div class="message">${d}</div>`;
+        scrollMessageContainerToBottom();
+    });
+
+    socket.on(`sve_poruke_${id}`, function (d) {
+        document.getElementById('poruke').innerHTML += `<div class="message">${d}</div>`;
+        scrollMessageContainerToBottom();
+    });
+
+    // Funkcija za automatsko skrolanje na dno kada se dodaju nove poruke
+    function scrollMessageContainerToBottom() {
+        var messageContainer = document.getElementById('poruke');
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+
+    function saljiPoruku() {
+        let tekst = document.getElementById('tekst_poruke').value;
+        socket.emit('klijent_salje_poruku', tekst);
+        document.getElementById('tekst_poruke').value = "";
+    }
+</script>
+</body>
+</html>

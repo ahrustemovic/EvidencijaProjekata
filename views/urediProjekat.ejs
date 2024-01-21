@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+        function formatirajDatum(datum) {
+            debugger
+            const databaseDate = new Date(datum).toISOString().split('T')[0];
+            console.log(databaseDate.toISOString().split('T')[0])
+            return databaseDate.toISOString().split('T')[0];
+        }
+    </script>
+
+</head>
+
+<body>
+<div class="b">
+<h2 class="c"><%= title %></h2>
+<div>
+
+    <form action="/users/urediProjekat" method="post" class="forma">
+        <input type="text" name="id" value="<%=projekat[0].id%>" hidden>
+        <label>Naziv projekta: </label>
+        <input type="text" name="naziv" value="<%=projekat[0].naziv%>" required class="form-control">
+        <br>
+
+        <label>Opis projekta: </label>
+        <input type="text" name="opis" value="<%=projekat[0].opis%>" required class="form-control">
+        <br>
+
+        <label>Datum pocetka projekta: </label>
+        <input type="date" name="startni_datum" value="<%=new Date(projekat[0].startni_datum).toISOString().split('T')[0]%>" required class="form-control">
+        <br>
+
+        <label>Datum kraja projekta: </label>
+        <input type="date" name="zavrsni_datum" value="<%=new Date(projekat[0].zavrsni_datum).toISOString().split('T')[0]%>" required class="form-control">
+        <br>
+
+
+        <input type="submit" value="Spremi izmjene!" class="form-control" style="background-color: #cfc8be;" >
+
+        <br>
+        <br>
+
+
+    </form>
+
+
+</div>
+</div>
+</body>
+</html>

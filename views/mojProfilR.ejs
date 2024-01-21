@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+
+    </style>
+
+
+</head>
+<body>
+<div class="header" id="mojHeader">
+    <a href="" class="active"> <i class="glyphicon glyphicon-book"> </i> IT </a>
+    <a class="desno" href="/radnik/chat"> <i class="glyphicon glyphicon-home"> </i>  </a>
+
+    <a class="desno" href="/logout"> <i class="glyphicon glyphicon-log-out"> </i>  </a>
+    <a class="desno" href=""> <i class="glyphicon glyphicon-user"> </i> </a>
+
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()"> <i class="fa fa-bars"> </i> </a>
+</div>
+<div class="container">
+    <br>
+    <br>
+    <br>
+    <h2 class="c">Moj profil!</h2>
+    <br>
+    <br>
+
+
+    <div>
+        <%for(let i = 0; i < korisnici.length; i++) {%>
+            <div>
+                <p>
+                    Ja sam <strong> <%= korisnici[i].ime %> <%= korisnici[i].prezime %></strong>, radnik u jednoj od vodećih IT kompanija,
+                    gdje se posvećujem istraživanju, učenju i doprinosu u dinamičnom svijetu tehnologije.
+                </p>
+                <br>
+                <p>
+                    Radim na projektima koji potiču rast i razvoj, često surađujući s vrhunskim stručnjacima u industriji.
+                    Moj fokus je na unapređenju procesa, suradnji s timom te kontinuiranom usavršavanju u ovom brzom evoluirajućem okruženju.
+                </p>
+                <br>
+                <p>
+                    Za daljnje informacije, suradnju ili razmjenu iskustava, slobodno me kontaktirajte putem emaila: <strong><%= korisnici[i].email %></strong>.
+                </p>
+                <br>
+                <p>
+                    Radujem se zajedničkom putovanju kroz svijet tehnologije!
+                </p>
+                <br>
+                <br>
+                <p><strong>Upravljaj radnim satima -> </strong> <button type="button" class="btn btn-warning" onclick="dodaj('<%= korisnici[i].id %>')">Dodaj radne sate!</button> </p>
+
+            </div>
+        <%}%>
+    </div>
+    <br>
+    <br>
+    <br>
+    <h5>Moji projekti:</h5>
+    <br>
+    <div class="table-responsive">
+        <br>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th> Naziv </th>
+                <th> Opis </th>
+                <th> Startni datum </th>
+                <th> Zavrsni datum </th>
+                <th>  </th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <%for(let j = 0; j < moji_projekti.length; j++) {%>
+
+                <tr>
+                    <td> <%= moji_projekti[j].naziv %> </td>
+                    <td> <%= moji_projekti[j].opis %> </td>
+                    <td style="width: 33%"> <%= moji_projekti[j].startni_datum %> </td>
+                    <td style="width: 33%"> <%= moji_projekti[j].zavrsni_datum %> </td>
+                    <td> <button type="button" class="btn btn-danger" onclick="detalji('<%= moji_projekti[j].id %>')">Detalji!</button> </td>
+
+
+                </tr>
+            <%}%>
+
+            </tbody>
+        </table>
+        <br>
+        <h5>Timovi:</h5>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th> Naziv </th>
+                <th> Ime menadžera </th>
+                <th> Prezime menadžera </th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <%for(let j = 0; j < timovi.length; j++) {%>
+                <tr>
+                    <td> <%= timovi[j].naziv %> </td>
+                    <td> <%= timovi[j].ime %> </td>
+                    <td> <%= timovi[j].prezime %> </td>
+                </tr>
+            <%}%>
+
+            </tbody>
+        </table>
+
+
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+
+<script>
+
+    function detalji(id) {
+        window.location.href="/radnik/detaljiProjekta/" + id;
+    }
+
+    function dodaj(id) {
+        console.log('Detalji funkcija:', id);
+        window.location.href="/radnik/dodajRadneSate/" + id;
+    }
+</script>
+
+</body>
+</html>
