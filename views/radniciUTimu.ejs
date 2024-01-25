@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-    <style>
 
+    <style>
 
         .team-card {
             border: 1px solid #ccc;
@@ -30,7 +30,9 @@
 </head>
 <body>
 <div class="header" id="mojHeader">
-    <a href="" class="active"> <i class="glyphicon glyphicon-book"> </i> IT </a>
+    <a href="" class="active"> <i class="glyphicon glyphicon-book"> </i> Evidencija </a>
+    <a href="/menadzer/chat"> <i class="glyphicon glyphicon-comment"> </i> Chat </a>
+
     <a class="desno" href="/logout"> <i class="glyphicon glyphicon-log-out"> </i>  </a>
     <a class="desno" href="/menadzer/mojProfil"> <i class="glyphicon glyphicon-user"> </i> </a>
 
@@ -50,17 +52,13 @@
 
 
 <div class="c">
-    <div class="card-deck">
         <% for(let j = 0; j < radnici.length; j++) { %>
-            <div class="card">
                 <div class="team-card">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQegbILcbmF5GKm--MgJueO-zn7bSM6xcl8YroeNQL3MlOdOco2pmg0iUrslYtmEMlu6w0&usqp=CAU" alt="Korisnici" style="width:100%">
                     <h5 class="card-title"><%= radnici[j].ime %> <%= radnici[j].prezime %></h5>
                     <a href="#" class="btn btn-primary" onclick="otvoriDetalje('<%= radnici[j].id %>')">Detalji</a>
                 </div>
-            </div>
         <% } %>
-    </div>
 </div>
 </div>
 <script>

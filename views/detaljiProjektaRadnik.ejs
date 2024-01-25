@@ -10,6 +10,39 @@
 
 </head>
 <body>
+<div class="header" id="mojHeader">
+    <a href="" class="active"> <i class="glyphicon glyphicon-book"> </i> Evidencija </a>
+    <script>
+
+        if ('<%= moj_tip %>' === "admin") {
+            document.write('<a href="/users/chat"> <i class="glyphicon glyphicon-comment"> </i> Chat </a>');
+        }
+        if('<%= moj_tip %>' === "radnik") {
+            document.write('<a href="/radnik/chat"> <i class="glyphicon glyphicon-comment"> </i> Chat </a>');
+        }
+        if ('<%= moj_tip %>' === "menadžer") {
+            document.write('<a href="/menadzer/chat"> <i class="glyphicon glyphicon-comment"> </i> Chat </a>');
+        }
+    </script>
+
+    <a class="desno" href="/logout"> <i class="glyphicon glyphicon-log-out"> </i>  </a>
+
+
+    <script>
+
+        if ('<%= moj_tip %>' === "admin") {
+            document.write('<a class="desno" href="/users/mojProfil"> <i class="glyphicon glyphicon-user"> </i>  </a>');
+        }
+        if('<%= moj_tip %>' === "radnik") {
+            document.write('<a class="desno" href="/radnik/mojProfil"> <i class="glyphicon glyphicon-user"> </i>  </a>');
+        }
+        if ('<%= moj_tip %>' === "menadžer") {
+            document.write('<a class="desno" href="/menadzer/mojProfil"> <i class="glyphicon glyphicon-user"> </i>  </a>');
+        }
+    </script>
+
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()"> <i class="fa fa-bars"> </i> </a>
+</div>
 <div class="container">
     <h2><%= title %></h2>
     <br>

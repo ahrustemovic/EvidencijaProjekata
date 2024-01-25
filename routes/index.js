@@ -27,14 +27,6 @@ router.get('/404', (req, res) => {
   res.render('404', { title: 'Error' });
 });
 
-// const webserver = express()
-//     .use((req, res) =>
-//         res.sendFile('/websocket-client.html', { root: __dirname })
-//     )
-//     .listen(3001, () => console.log(`Listening on ${3000}`))
-
-// const { WebSocketServer } = require('ws')
-// const sockserver = new WebSocketServer({ port: 443 })
 
 let pomocne = {
   kriptuj: function (lozinka) {
@@ -100,7 +92,7 @@ let funkcije = {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('home', { title: 'IT' });
+  res.render('home', { title: 'Evidencija projekata' });
 });
 
 router.get('/login', function (req, res, next) {
@@ -130,7 +122,7 @@ router.post('/login', funkcije.provjeriPrijavu, function (req, res, next) {
 
 router.get('/logout', (req, res, next) => {
   res.clearCookie('opkn')
-  res.render('login', {title: 'IT'})
+  res.render('login', {title: 'Prijavi se!'})
 })
 
 
@@ -139,49 +131,6 @@ function currentDate() {
   return now.toISOString();
 }
 
-
-//dodaj u rutu id - to ce znaciti da saljem toj osobi sa tim id-em
-// router.get('/test/ws/:id', function (req, res, next) {
-//   var id = req.params.id;
-//
-//   if (!io) {
-//     io = require('socket.io')(req.connection.server);
-//
-//     io.on('connection', function (client) {
-//       console.info('konektovan');
-//        var moj_id = req.cookies.opkn.id;
-//
-//       //client.emit('sve_poruke', poruke.toString());
-//       client.emit(`sve_poruke_${id}`, poruke.toString());
-//
-//       client.on('disconnect', function () {
-//         console.log('disconnected event');
-//       });
-//
-//       client.on('klijent_salje_poruku', function (d) {
-//         poruke.push(d);
-//         pool.connect(function (err, client, done) {
-//           if (err) {
-//             console.error(err);
-//             res.end('{"error" : "Error", "status" : 500}');
-//           }
-//           client.query(`insert into poruke (posiljalac_id, tekst_poruke, vrijeme, primaoc_id) values ($1, $2, $3, $4)`, [moj_id, d, currentDate(), id], function (err, result) {
-//             done();
-//             if (err) {
-//               console.info(err);
-//               res.sendStatus(500);
-//             }
-//             else {
-//               next();
-//             }
-//           });
-//         });
-//         io.emit('poruka_sa_servera', d);
-//       })
-//     });
-//   }
-//   res.render('chatPoruke2', { title: 'IT' , id: id});
-// });
 
 router.get('/test/ws/:id', function (req, res, next) {
   var id = req.params.id;
@@ -206,7 +155,17 @@ router.get('/test/ws/:id', function (req, res, next) {
         return;
       }
 
-      var porukeIzBaze = result.rows.map(row => row.tekst_poruke);
+      // var porukeIzBaze = result.rows.map(row => row.tekst_poruke);
+
+      var porukeIzBaze = result.rows.map(row => {
+        return {
+          tekst_poruke: row.tekst_poruke,
+          vrijeme: row.vrijeme,
+          posiljalac_id: row.posiljalac_id,
+          primalac_id: row.primalac_id
+        };
+      });
+
 
       if (!io) {
 
@@ -221,28 +180,38 @@ router.get('/test/ws/:id', function (req, res, next) {
             console.log('disconnected event');
           });
 
-          client.on('klijent_salje_poruku', function (d) {
-            porukeIzBaze.push(d);
-            poruke.push(d);
+          client.on('klijent_salje_poruku', function (d, id1, id2) {
+
+            const novaPoruka = {
+              tekst_poruke: d,
+              vrijeme: currentDate(),
+              posiljalac_id: id2,
+              primalac_id: id1
+            };
+
+
+
+            porukeIzBaze.push(novaPoruka);
+            poruke.push(novaPoruka);
             pool.connect(function (err, client, done) {
               if (err) {
                 console.error(err);
                 res.end('{"error" : "Error", "status" : 500}');
               }
-              client.query(`insert into poruke (posiljalac_id, tekst_poruke, vrijeme, primaoc_id) values ($1, $2, $3, $4)`, [moj_id, d, currentDate(), id], function (err, result) {
+              client.query(`insert into poruke (posiljalac_id, tekst_poruke, vrijeme, primaoc_id) values ($1, $2, $3, $4)`, [id2, d, currentDate(), id1], function (err, result) {
                 done();
                 if (err) {
                   console.info(err);
                   res.sendStatus(500);
                 } else {
-                  io.emit('poruka_sa_servera', d);
+                  io.emit('poruka_sa_servera', novaPoruka);
                 }
               });
             });
           })
         });
       }
-      res.render('chatPoruke2', { title: 'IT', id: id, poruke: porukeIzBaze });
+      res.render('chatPoruke2', { title: 'IT', id: id, moj_id: moj_id, poruke: porukeIzBaze});
     });
   });
 });

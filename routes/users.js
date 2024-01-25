@@ -280,7 +280,6 @@ router.get('/detalji/:id', function (req, res, next) {
       }
       else{
         console.info(result.rows);
-       // res.render('korisnici', {title: 'Korisnici', korisnici: result.rows});
         req.korisnici = result.rows;
         next();
       }
@@ -307,7 +306,6 @@ router.get('/detalji/:id', function (req, res, next) {
             return res.send(err);
           } else {
             console.info(result.rows);
-            //res.render('detaljORadniku', {title: 'Detalji', projekti: result.rows, korisnici: req.korisnici});
             req.projekti = result.rows;
             next();
           }
@@ -356,50 +354,6 @@ router.get('/detalji/:id', function (req, res, next) {
     }
 
     );
-
-// router.get('/sviProjekti', function (req, res, next) {
-//
-//       pool.connect(function (err, client, done) {
-//         if (err) {
-//           res.end('{"error" : "Error", "status" : 500}');
-//         }
-//         client.query(`select p.naziv, p.opis, p.startni_datum, p.zavrsni_datum, k.email as email_menadzera from projekti p join
-//                     korisnici k on p.menader_projekta = k.id where p.zavrsni_datum < CURRENT_DATE()`, [], function(err, result) {
-//           done();
-//
-//           if (err) {
-//             //return res.sendStatus(500);
-//             return res.send(err);
-//           }
-//           else{
-//             console.info(result.rows);
-//             req.nezavrseniProjekti = result.rows;
-//             next();
-//           }
-//         });
-//       })
-//     }
-    // function (req, res, next) {
-    //   pool.connect(function (err, client, done) {
-    //     if (err) {
-    //       return res.send(err);
-    //     }
-    //     client.query(`select p.naziv, p.opis, p.startni_datum, p.zavrsni_datum, k.email as email_menadzera from projekti p join
-    //                 korisnici k on p.menader_projekta = k.id where p.zavrsni_datum <CURRENT_DATE()`, [], function (err, result) {
-    //       done();
-    //       if (err) {
-    //         return res.send(err);
-    //       } else {
-    //         console.info(result.rows);
-    //         res.render('sviProjekti', {title: 'Svi projekti',zavrseniProjekti: req.zavrseniProjekti,
-    //           nezavrseniProjekti: result.rows});
-    //
-    //       }
-    //     });
-    //   });
-    // }
-
-  // )
 
 router.get('/sviProjekti',db.prikaziProjekte, function (req, res, next) {
   //res.send('respond with a resource');
@@ -481,7 +435,7 @@ router.get('/detaljiProjekta/:id', function (req, res, next) {
           }
           else{
             console.info(result.rows);
-            res.render('detaljiProjektaRadnik', {title: 'Detalji o projektu', taskovi:result.rows, detalji: req.detalji, radnici: req.radnici});
+            res.render('detaljiProjektaRadnik', {title: 'Detalji o projektu', taskovi:result.rows, detalji: req.detalji, radnici: req.radnici, moj_tip: req.cookies.opkn.tip});
           }
         });
       })
@@ -658,9 +612,30 @@ router.get('/mojProfil', function (req, res, next) {
 );
 
 
-//res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+router.get('/chat', function(req, res, next) {
+      var id = req.cookies.opkn.id;
 
+      pool.connect(function (err, client, done) {
+        if (err) {
+          res.end('{"error" : "Error", "status" : 500}');
+        }
+        client.query(`select * from korisnici k where k.jeLiObrisan = false and k.id != '${id}'`, function(err, result) {
+          done();
 
+          if (err) {
+            return res.sendStatus(500);
+          }
+          else{
+            console.info(result.rows);
+            // req.korisnici = result.rows;
+            // next();
+            res.render('chat', {title: 'Odaberi korisnika', korisnici: result.rows});
+
+          }
+        });
+      })
+    }
+);
 
 
 module.exports = router;

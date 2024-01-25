@@ -7,6 +7,7 @@ const {resolveInclude} = require("ejs");
 const nodemailer = require("nodemailer");
 const fs = require('fs');
 
+
 const DB_CONNECTION = {
     host: 'cornelius.db.elephantsql.com',
     user: 'djrvmtxp',
@@ -76,7 +77,6 @@ router.get('/mojProfil', function (req, res, next) {
                 done();
 
                 if (err) {
-                    //return res.sendStatus(500);
                     return res.send(err);
                 }
                 else{
@@ -101,8 +101,6 @@ router.get('/mojProfil', function (req, res, next) {
                 } else {
                     req.projekti = result.rows;
                     next();
-                    //console.info(result.rows);
-                    //res.render('mojProfil', {title: 'Moj profil', projekti: result.rows, korisnici: req.korisnici});
 
                 }
             });
@@ -114,7 +112,7 @@ router.get('/mojProfil', function (req, res, next) {
             if (err) {
                 return res.send(err);
             }
-            client.query(`select p.naziv, p.opis , p.startni_datum, p.zavrsni_datum from projekti p 
+            client.query(`select p.id, p.naziv, p.opis , p.startni_datum, p.zavrsni_datum from projekti p 
                         left join dodijeljeni_projekti dp on dp.projekat_id = p.id where dp.korisnik_id = $1 and p.menader_projekta != $1`, [id], function (err, result) {
                 done();
                 if (err) {
@@ -196,7 +194,7 @@ router.get('/noviProjekat/:id', function (req, res, next) {
 
 router.post('/noviProjekat', db.dodajProjekat, function (req, res, next) {
      const id = req.cookies.opkn.id;
-     res.redirect(`/menadzer/mojProfil/${id}`);
+     res.redirect(`/menadzer/mojProfil`);
     //res.redirect('back');
 });
 
@@ -225,7 +223,6 @@ router.get('/detaljiRadnika/:id', function (req, res, next) {
                 console.info(result.rows);
                 req.detalji = result.rows;
                 next();
-                // res.render('detaljiRadnika', {title: 'Detalji o radniku', detalji:result.rows});
             }
         });
     })
@@ -299,11 +296,12 @@ router.get('/detaljiProjekta/:id', function (req, res, next) {
     function (req, res, next) {
 
         var id = req.params.id;
+        console.info(id);
         pool.connect(function (err, client, done) {
             if (err) {
                 res.end('{"error" : "Error", "status" : 500}');
             }
-            client.query(`select distinct k.id, k.ime, k.prezime, k.email, coalesce(sum(rs.broj_radnih_sati), 0) as ukupan_broj_sati from korisnici k
+            client.query(`select k.id, k.ime, k.prezime, k.email, coalesce(sum(rs.broj_radnih_sati), 0) as ukupan_broj_sati from korisnici k
                           left join dodijeljeni_projekti dp on k.id = dp.korisnik_id
                           left join radni_sati rs on k.id = rs.korisnik_id
                           where k.jeLiObrisan = false
@@ -312,7 +310,14 @@ router.get('/detaljiProjekta/:id', function (req, res, next) {
                 done();
 
                 // and rs.task_id in (select id from taskovi where projekat_id = $1)
-
+                // and dp.projekat_id = $1
+                //left join dodijeljeni_projekti dp on k.id = dp.korisnik_id
+                // select k.id, k.ime, k.prezime, k.email, coalesce(sum(rs.broj_radnih_sati), 0) as ukupan_broj_sati from korisnici k
+                // left join dodijeljeni_projekti dp on k.id = dp.korisnik_id
+                // left join radni_sati rs on k.id = rs.korisnik_id
+                // where k.jeLiObrisan = false
+                // and and dp.projekat_id = $1
+                // group by k.id, k.ime, k.prezime, k.email
                 if (err) {
                     console.error(err);
                     return res.sendStatus(500);
@@ -403,6 +408,7 @@ router.post('/dodajRadnikaUProjekat/', function (req, res, next) {
                         done();
                     } else {
                         projekat_id = result.rows[0].id;
+                        // var projekat_naziv = result.rows[0].naziv;
                         console.log(projekat_id);
                         client.query(`insert into dodijeljeni_projekti(korisnik_id, projekat_id) values ($1, $2)`, [radnik_id, projekat_id], function (err, result) {
                             done();
@@ -410,6 +416,44 @@ router.post('/dodajRadnikaUProjekat/', function (req, res, next) {
                                 console.error(err);
                                 res.sendStatus(500);
                             } else {
+                                nodemailer.createTestAccount((err, account) => {
+                                    if (err) {
+                                        console.error('Failed to create a testing account. Check your nodemailer configuration.');
+                                        return;
+                                    }
+
+                                    // Create a transporter with the test account
+                                    const transporter = nodemailer.createTransport({
+                                        host: account.smtp.host,
+                                        port: account.smtp.port,
+                                        secure: account.smtp.secure,
+                                        auth: {
+                                            user: account.user,
+                                            pass: account.pass,
+                                        },
+                                    });
+
+                                    // Your email options
+                                    const mailOptions = {
+                                        from: 'anesa.node@gmail.com',
+                                        to: izForme.email,
+                                        subject: 'Obavijest!',
+                                        text: `Poštovani,
+                                        Obavještavamo Vas da ste dodani kao član našeg tima na projektu pod nazivom "${izForme.naziv}". 
+                                        Vaš doprinos će biti od izuzetnog značaja za uspješnu realizaciju projekta.
+                                        Hvala Vam na angažmanu i radujemo se suradnji na ovom projektu.`,
+                                    };
+
+                                    // Send mail with defined transport object
+                                    transporter.sendMail(mailOptions, (error, info) => {
+                                        if (error) {
+                                            return console.log(error);
+                                        }
+
+                                        console.log('Preview URL: ' + nodemailer.getTestMessageUrl(info));
+                                    });
+                                });
+
                                 res.redirect(`/menadzer/detaljiProjekta/${projekat_id}`)
                             }
                         });
@@ -455,7 +499,7 @@ router.post('/noviTim', function (req, res, next) {
                         console.error(err);
                         res.sendStatus(500);
                     } else {
-                        res.redirect(`/menadzer/mojProfil/${menadzer_id}`)
+                        res.redirect(`/menadzer/mojProfil`)
                     }
                         });
                     }
@@ -464,7 +508,7 @@ router.post('/noviTim', function (req, res, next) {
 })
 
 router.get('/dodajRadnikaUTim/:id', function (req, res, next) {
-    res.render('dodajRadnikaUTim', {title: 'Radni sati', id: req.params.id});
+    res.render('dodajRadnikaUTim', {title: 'Novi radnik', id: req.params.id});
 });
 
 router.post('/dodajRadnikaUTim/:id', function (req, res, next) {
@@ -481,7 +525,6 @@ router.post('/dodajRadnikaUTim/:id', function (req, res, next) {
         }
         let korisnik_id;
         client.query(`select k.id from korisnici k where k.email = $1`, [dodajKod.email], function (err, result) {
-            //done();
 
             if (err) {
                 console.info(err);
@@ -502,7 +545,8 @@ router.post('/dodajRadnikaUTim/:id', function (req, res, next) {
                         console.error(err);
                         res.sendStatus(500);
                     } else {
-                        res.redirect('/tim/' + id)
+                        //console.log('/tim/' + id);
+                        res.redirect('/menadzer/tim/' + id)
 
                     }
                 });
@@ -567,6 +611,92 @@ router.post('/dodajTask/:id_projekta', function (req, res, next) {
         });
     })
 });
+
+
+
+router.get('/detaljiProjektaRadnik/:id', function (req, res, next) {
+        var id = req.params.id;
+        pool.connect(function (err, client, done) {
+            if (err) {
+                res.end('{"error" : "Error", "status" : 500}');
+            }
+            client.query(`select p.id as id_projekta, p.naziv, p.opis, p.startni_datum, p.zavrsni_datum, p.menader_projekta, k.id, k.ime, k.prezime from projekti p
+                    left join korisnici k on k.id = p.menader_projekta 
+                    where k.jeLiObrisan = false and p.id = $1`, [id], function(err, result) {
+                done();
+
+                if (err) {
+                    console.info(id);
+                    return res.sendStatus(500);
+                }
+                else{
+                    console.info(id);
+                    console.info(result.rows);
+                    req.detalji = result.rows;
+                    next();
+                }
+            });
+        })
+    },
+    function (req, res, next) {
+
+        var id = req.params.id;
+        pool.connect(function (err, client, done) {
+            if (err) {
+                res.end('{"error" : "Error", "status" : 500}');
+            }
+            client.query(`select distinct k.id, k.ime, k.prezime, k.email, coalesce(sum(rs.broj_radnih_sati), 0) as ukupan_broj_sati from korisnici k
+                          left join dodijeljeni_projekti dp on k.id = dp.korisnik_id
+                          left join radni_sati rs on k.id = rs.korisnik_id
+                          where k.jeLiObrisan = false
+                          and dp.projekat_id = $1
+                          group by k.id, k.ime, k.prezime, k.email;`, [id], function(err, result) {
+                done();
+
+                // and rs.task_id in (select id from taskovi where projekat_id = $1)
+
+                if (err) {
+                    console.error(err);
+                    return res.sendStatus(500);
+                }
+                else{
+                    console.info(result.rows);
+                    req.radnici = result.rows;
+                    next();
+                    // res.render('detaljiProjekta', {title: 'Detalji o projektu', radnici:result.rows, detalji: req.detalji});
+                }
+            });
+        })
+    },
+    function (req, res, next) {
+
+        var id = req.params.id;
+        pool.connect(function (err, client, done) {
+            if (err) {
+                res.end('{"error" : "Error", "status" : 500}');
+            }
+            client.query(`select k.ime, k.prezime, t.korisnik_id, t.naziv, t.opis, st.status, coalesce(sum(rs.broj_radnih_sati), 0) as ukupan_broj_sati from taskovi t
+                          left join radni_sati rs on t.id = rs.task_id
+                          left join status_taska st on st.task_id = t.id
+                          left join korisnici k on k.id = t.korisnik_id
+                          where t.projekat_id = $1
+                          group by k.ime, k.prezime, t.id, t.naziv, t.opis, st.status`, [id], function(err, result) {
+                done();
+
+                if (err) {
+                    console.error("Greška u upitu:", err.message);
+                    return res.sendStatus(404);
+                }
+                else{
+                    console.info(result.rows);
+                    res.render('detaljiProjektaRadnik', {title: 'Detalji o projektu', taskovi:result.rows, detalji: req.detalji, radnici: req.radnici, moj_tip: req.cookies.opkn.tip});
+                }
+            });
+        })
+    }
+);
+
+
 
 
 router.get('/izvjestaj/:id', function (req, res, next){
@@ -642,7 +772,7 @@ router.post('/posaljiNaMail', function (req, res, next) {
                 // Prikazivanje URL-a za pregled e-maila (za testiranje)
                 console.log('Preview URL: ' + nodemailer.getTestMessageUrl(info));
 
-                // Vraćanje odgovora klijentu
+
                 res.status(200).send('Izvještaj poslan na e-mail!');
             });
         });
@@ -652,6 +782,31 @@ router.post('/posaljiNaMail', function (req, res, next) {
     }
 });
 
+
+router.get('/chat', function(req, res, next) {
+        var id = req.cookies.opkn.id;
+
+        pool.connect(function (err, client, done) {
+            if (err) {
+                res.end('{"error" : "Error", "status" : 500}');
+            }
+            client.query(`select * from korisnici k where k.jeLiObrisan = false and k.id != '${id}'`, function(err, result) {
+                done();
+
+                if (err) {
+                    return res.sendStatus(500);
+                }
+                else{
+                    console.info(result.rows);
+                    // req.korisnici = result.rows;
+                    // next();
+                    res.render('chat', {title: 'Odaberi korisnika', korisnici: result.rows});
+
+                }
+            });
+        })
+    }
+);
 
 
 module.exports = router;

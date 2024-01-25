@@ -183,3 +183,19 @@ a {
   font-size: 12px;
   color: #666;
 }
+
+.naslov {
+  margin-bottom: 30px;
+}
+
+.centriran-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  text-align: center;
+}
+
+.dugme {
+  margin-top: 35px;
+}

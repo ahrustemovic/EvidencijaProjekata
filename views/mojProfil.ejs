@@ -35,9 +35,12 @@
 </head>
 <body>
 <div class="header" id="mojHeader">
-    <a href="" class="active"> <i class="glyphicon glyphicon-book"> </i> IT </a>
+    <a href="" class="active"> <i class="glyphicon glyphicon-book"> </i> Evidencija </a>
+    <a href="/menadzer/chat"> <i class="glyphicon glyphicon-comment"> </i> Chat </a>
+
     <a class="desno" href="/logout"> <i class="glyphicon glyphicon-log-out"> </i>  </a>
     <a class="desno" href=""> <i class="glyphicon glyphicon-user"> </i> </a>
+
 
     <a href="javascript:void(0);" class="icon" onclick="myFunction()"> <i class="fa fa-bars"> </i> </a>
 </div>
@@ -107,8 +110,8 @@
                 <tr>
                     <td> <%= projekti[j].naziv %> </td>
                     <td> <%= projekti[j].opis %> </td>
-                    <td style="width: 33%"> <%= projekti[j].startni_datum %> </td>
-                    <td style="width: 33%"> <%= projekti[j].zavrsni_datum %> </td>
+                    <td style="width: 33%"> <%= projekti[j].startni_datum.toLocaleDateString() %> </td>
+                    <td style="width: 33%"> <%= projekti[j].zavrsni_datum.toLocaleDateString() %> </td>
                     <td> <button type="button" class="btn btn-danger" onclick="detalji('<%= projekti[j].id %>')">Detalji!</button> </td>
 
 
@@ -141,8 +144,8 @@
                 <tr>
                     <td> <%= moji_projekti[j].naziv %> </td>
                     <td> <%= moji_projekti[j].opis %> </td>
-                    <td style="width: 33%"> <%= moji_projekti[j].startni_datum %> </td>
-                    <td style="width: 33%"> <%= moji_projekti[j].zavrsni_datum %> </td>
+                    <td style="width: 33%"> <%= moji_projekti[j].startni_datum.toLocaleDateString() %> </td>
+                    <td style="width: 33%"> <%= moji_projekti[j].zavrsni_datum.toLocaleDateString() %> </td>
                     <td> <button type="button" class="btn btn-danger" onclick="detaljiRadnik('<%= moji_projekti[j].id %>')">Detalji!</button> </td>
 
 

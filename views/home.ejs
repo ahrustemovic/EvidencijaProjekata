@@ -9,21 +9,41 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+
+    <style>
+        body {
+            background-image: url('https://images.hdqwalls.com/download/ios-13-grey-dark-5k-r6-2560x1440.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #E2DFD2;
+            font-family: 'Arial', sans-serif;
+        }
+
+    </style>
 </head>
 <body>
 <div class="header" id="mojHeader">
-    <a href="" class="active"> <i class="glyphicon glyphicon-book"> </i> IT </a>
-    <a class="desno" href="/logout"> <i class="glyphicon glyphicon-log-out"> </i>  </a>
-<!--    <a class="desno"href="/users/mojProfil"> <i class="glyphicon glyphicon-user"> </i>  </a>-->
+    <a href="" class="active"> <i class="glyphicon glyphicon-book"> </i> Evidencija </a>
+<!--    <a class="desno" href="/logout"> <i class="glyphicon glyphicon-log-out"> </i>  </a>-->
 
     <a href="javascript:void(0);" class="icon" onclick="myFunction()"> <i class="fa fa-bars"> </i> </a>
 </div>
+<div class="container centriran-text">
+<!--<div class="b">-->
+    <div class="c">
+<h1 class="naslov"><%= title %></h1>
+<!--<p>Welcome to <%= title %></p>-->
+        <h4>Aplikacija je namijenjena olakšanju vođenja evidencije projekata za tvrtke.</h4>
 
-<div class="b">
-<h1><%= title %></h1>
-<p>Welcome to <%= title %></p>
-<button type="button" class="btn btn-warning" onclick="login()">Prijava!</button>
+        <h4>Pruža korisnicima intuitivno sučelje koje omogućuje brzo i učinkovito praćenje svih aspekata projekata,
+            uključujući dodijeljene zadatke, napredak, resurse, i rokove. </h4>
 
+        <h4>Ova alatka omogućuje organizacijama bolju preglednost,
+        upravljanje projektima i optimizaciju radnih procesa kako bi ostvarile uspješne rezultate.</h4>
+<button type="button" class="btn btn-warning dugme" onclick="login()">Prijava!</button>
+    </div>
+<!--</div>-->
 <script>
     function login(){
         window.location.href="./login";

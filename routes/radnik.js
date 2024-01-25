@@ -65,7 +65,7 @@ router.get('/mojProfil', function (req, res, next) {
             if (err) {
                 return res.send(err);
             }
-            client.query(`select t.id, k.id, k.ime, k.prezime, t.naziv, tr.korisnik_id from korisnici k
+            client.query(`select distinct t.id, k.id, k.ime, k.prezime, t.naziv, tr.korisnik_id from korisnici k
                         left join timovi t on k.id = t.menader_tima
                         left join timovi_radnici tr on t.id = tr.tim_id
                         where tr.korisnik_id = $1`, [id], function (err, result) {
@@ -119,10 +119,11 @@ router.get('/detaljiProjekta/:id', function (req, res, next) {
                           left join dodijeljeni_projekti dp on k.id = dp.korisnik_id
                           left join radni_sati rs on k.id = rs.korisnik_id
                           where k.jeLiObrisan = false
-                          and dp.projekat_id = $1
+                          and dp.projekat_id = $1 
                           group by k.id, k.ime, k.prezime, k.email;`, [id], function(err, result) {
                 done();
                 // and rs.task_id in (select id from taskovi where projekat_id = $1)
+                // and dp.projekat_id = $1 and rs.task_id IN (SELECT id FROM taskovi WHERE projekat_id = $1)
 
                 if (err) {
                     return res.sendStatus(500);
@@ -155,13 +156,18 @@ router.get('/detaljiProjekta/:id', function (req, res, next) {
                 }
                 else{
                     console.info(result.rows);
-                    res.render('detaljiProjektaRadnik', {title: 'Detalji o projektu', taskovi:result.rows, detalji: req.detalji, radnici: req.radnici});
+                    res.render('detaljiProjektaRadnik', {title: 'Detalji o projektu', taskovi:result.rows, detalji: req.detalji, radnici: req.radnici, moj_tip: req.cookies.opkn.tip});
                 }
             });
         })
     }
 
 );
+
+function currentDate() {
+    const now = new Date();
+    return now.toISOString();
+}
 
 router.get('/dodajRadneSate/:id', function (req, res, next) {
     res.render('unesiRadneSate', {title: 'Radni sati', id: req.params.id});
@@ -189,7 +195,6 @@ router.post('/dodajRadneSate', function (req, res, next) {
         }
         let task_id;
         client.query(`select t.id from taskovi t left join projekti p on p.id = t.projekat_id where p.naziv = $1 and t.naziv = $2`, [naziv_projekta, naziv_taska], function (err, result) {
-            //done();
 
             if (err) {
                 console.info(err);
@@ -204,7 +209,7 @@ router.post('/dodajRadneSate', function (req, res, next) {
 
             else {
                 task_id = result.rows[0].id;
-                client.query(`insert into radni_sati (korisnik_id, task_id, broj_radnih_sati) values ($1, $2, $3)`, [id, task_id, radni_sati], function (err, result) {
+                client.query(`insert into radni_sati (korisnik_id, task_id, broj_radnih_sati, datum) values ($1, $2, $3, $4)`, [id, task_id, radni_sati, currentDate()], function (err, result) {
                     done();
                     if (err) {
                         console.error(err);
