@@ -205,7 +205,7 @@ router.get('/detaljiRadnika/:id', function (req, res, next) {
         if (err) {
             res.end('{"error" : "Error", "status" : 500}');
         }
-        client.query(`select k.id, k.ime, k.prezime, k.email, p.id, p.naziv as projekat_naziv, t.id, t.naziv as task_naziv, t.opis as task_opis, st.status as task_status, sum(broj_radnih_sati) as ukupno_radnih_sati from korisnici k
+        client.query(`select distinct k.id, k.ime, k.prezime, k.email, p.id, p.naziv as projekat_naziv, t.id, t.naziv as task_naziv, t.opis as task_opis, st.status as task_status, sum(broj_radnih_sati) as ukupno_radnih_sati from korisnici k
                     left join dodijeljeni_projekti dp on k.id = dp.korisnik_id
                     left join projekti p on p.id = dp.projekat_id 
                     left join taskovi t on p.id = t.projekat_id 

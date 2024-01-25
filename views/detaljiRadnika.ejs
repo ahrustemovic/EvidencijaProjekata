@@ -28,13 +28,15 @@
     <br>
 
     <div>
-        <%for(let i = 0; i < detalji.length; i++) {%>
-            <div>
-                <p><strong>Ime:</strong> <%= detalji[i].ime %></p>
-                <p><strong>Prezime:</strong> <%= detalji[i].prezime %></p>
-                <p><strong>E-mail:</strong> <%= detalji[i].email %></p>
-            </div>
-        <%}%>
+        <% for (let i = 0; i < detalji.length; i++) { %>
+            <% if (i === 0) { %>
+                <div>
+                    <p><strong>Ime:</strong> <%= detalji[i].ime %></p>
+                    <p><strong>Prezime:</strong> <%= detalji[i].prezime %></p>
+                    <p><strong>E-mail:</strong> <%= detalji[i].email %></p>
+                </div>
+            <% } %>
+        <% } %>
     </div>
     <br>
     <br>
